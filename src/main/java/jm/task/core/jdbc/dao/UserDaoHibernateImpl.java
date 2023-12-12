@@ -85,40 +85,28 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-
             Root<User> root = criteriaQuery.from(User.class);
             criteriaQuery.select(root);
-
             Query<User> query = session.createQuery(criteriaQuery);
             return query.getResultList();
         } catch (Exception ex) {
-            if (transaction != null) {
-                transaction.rollback();
                 System.out.println(ex.getMessage());
-            }
         }
         return null;
     }
 
     @Override
     public void cleanUsersTable() {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaDelete<User> criteriaDelete = criteriaBuilder.createCriteriaDelete(User.class);
             criteriaDelete.from(User.class);
             session.createQuery(criteriaDelete);
-            transaction.commit();
         } catch (Exception ex) {
-            if(transaction != null) {
-                transaction.rollback();
                 System.out.println(ex.getMessage());
-            }
         }
 
     }

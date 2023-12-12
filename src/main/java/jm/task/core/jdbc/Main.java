@@ -20,6 +20,6 @@ public class Main {
         userService.getAllUsers().forEach(System.out::println);
 
         userService.cleanUsersTable();
-       // userService.dropUsersTable();
+        userService.dropUsersTable();
     }
 }
